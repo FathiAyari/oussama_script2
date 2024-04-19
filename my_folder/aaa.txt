@@ -1,0 +1,77 @@
+Datum:	05.04.2024_08:42
+WA:	Taktil 3 Dur
+ENTY:	612841
+ZUDR:	199581
+Rohrl nge:	381,00
+
+Offsets:
+M1 Nut 1:	-0,057
+Konstantbereich Nut 1:	0,057
+Bypass Nut 1:	0,012
+Konstantbereich Nut 2:	0,000
+Bypass Nut 2:	0,000
+Konstantbereich Nut 3:	0,000
+Bypass Nut 3:	0,000
+Konstantes Leck:	2,729
+
+Messdaten:
+11,11
+00,00
+22,22
+
+
+
+
+
+
+
+Datum:	05.04.2023_08:43
+ENTY:	612841
+ZUDR:	199581
+Rohrl nge:	381,00
+
+Offsets:
+M1 Nut 1:	-0,057
+Konstantbereich Nut 1:	0,057
+Bypass Nut 1:	0,012
+Konstantbereich Nut 2:	0,000
+Bypass Nut 2:	0,000
+Konstantbereich Nut 3:	0,000
+Bypass Nut 3:	0,000
+Konstantes Leck:	2,729
+
+Messdaten:
+33,33
+00,00
+44,44
+
+
+
+
+
+
+
+
+
+
+
+Datum:	05.04.2023_08:43
+ENTY:	612841
+ZUDR:	199581
+Rohrl nge:	381,00
+
+Offsets:
+M1 Nut 1:	-0,057
+Konstantbereich Nut 1:	0,057
+Bypass Nut 1:	0,012
+Konstantbereich Nut 2:	0,000
+Bypass Nut 2:	0,000
+Konstantbereich Nut 3:	0,000
+Bypass Nut 3:	0,000
+Konstantes Leck:	2,729
+
+Messdaten:
+55,55
+00,00
+66,66
+77,77

@@ -19,81 +19,102 @@ def treat_data(file_path):
     flag = False
     valuesX = []
     valuesY = []
-    date=""
-    wa=""
+    date = ""
+    wa = ""
     flag_write = False
+    flag_Y = False
+    line_index = 0
 
+    file_name = os.path.basename(file_path)  # Extract the filename from the file path
     with open(file_path, 'r') as fileToTreat:
+
         lines = fileToTreat.readlines()
 
         x = ""
         y = ""
 
-
         for i, line in enumerate(lines, start=1):
-            valuesY=[]
-            valuesY.extend([str(val) for val in line.strip().split()])
-            if i == 1:
-                date = line.strip().split(":")[1]
+
             if i == 2:
                 wa = line.strip().split(":")[1]
 
+            if "Datum:" in line.strip():
+                date = line.split("Datum:")[1].strip()
+
+
+            if flag_Y :
+
+                if not line.strip() or i == len(lines):
+                    if i == len(lines):
+                        valuesY = []
+                        valuesY.extend([str(val) for val in line.strip().split()])
+                    flag_Y = False
+                    flag_write=True
+
+                if  flag_write==False:
+                    valuesY = []
+                    valuesY.extend([str(val) for val in line.strip().split()])
+
             if flag:
+                line_index += 1
+
                 valuesX.extend([str(val) for val in line.strip().split()])
+
                 flag = False
-                flag_write = True
-               # print(valuesX)
+                flag_Y = True
+
             if line.strip() == "Messdaten:":
-                flag = True
-        print(len(valuesX))
-        print(len(valuesY))
-        if flag_write:
-
-            try:
-                connection = pymysql.connect(**connection_config)
-                print("Connected to MySQL database")
-                cursor = connection.cursor()
-
-                create_table_query = """
-                    CREATE TABLE IF NOT EXISTS your_table3 (
-                        id INT AUTO_INCREMENT PRIMARY KEY,
-                        x varchar(255),
-                        y varchar(255),
-                        wa varchar(255),
-                        datum varchar(255)
-                    )
-                """
-                cursor.execute(create_table_query)
-                print("Table created successfully or already exists")
-
-                data_to_insert = [( x, y, wa, date) for x, y in zip(valuesX, valuesY)]
-                # SQL query to insert data1.txt into the table
-                insert_query = """
-                    INSERT INTO your_table3 (x, y,wa, datum)
-                    VALUES ( %s, %s,%s,%s)
-                """
-                # Execute the SQL query for each data1.txt row
-                cursor.executemany(insert_query, data_to_insert)
-                connection.commit()
-                print("Data inserted successfully to your_table")
-
-                ###############################################################################
-
-            except pymysql.Error as e:
-                print(f"Error connecting to MySQL database: {e}")
-            finally:
-                # Close cursor and connection
-                if 'cursor' in locals():
-                    cursor.close()
-                if 'connection' in locals() and connection.open:
-                    connection.close()
-            valuesX = []
-            valuesY = []
-            flag_write = False
+               flag = True
 
 
-    # Database connection details
+            if flag_write:
+                print("test jrerekrn")
+                print("Date:", date)
+                print("WA:", wa)
+                print("Value of x at line", i, ":", valuesX)
+                print("Value of y at line", i, ":", valuesY)
+                print("line index", line_index)
 
+                try:
+                    connection = pymysql.connect(**connection_config)
+                    print("Connected to MySQL database")
+                    cursor = connection.cursor()
+
+                    create_table_query = """
+                        CREATE TABLE IF NOT EXISTS your_table3 (
+                            id INT AUTO_INCREMENT PRIMARY KEY,
+                            x VARCHAR(255),
+                            y VARCHAR(255),
+                            datum VARCHAR(255),
+                            line_index int(10)
+                        )
+                    """
+                    cursor.execute(create_table_query)
+                    print("Table created successfully or already exists")
+
+                    # Füge den Dateinamen in den Insert-Befehl ein
+                    data_to_insert = [(x, y, date, line_index) for x, y in zip(valuesX, valuesY)]
+                    insert_query = """
+                                        INSERT INTO your_table3 (x, y, datum, line_index)
+                                        VALUES (%s, %s, %s, %s)
+                                    """
+                    cursor.executemany(insert_query, data_to_insert)
+                    connection.commit()
+                    print("Data inserted successfully to your_table")
+
+                except pymysql.Error as e:
+                    print(f"Error connecting to MySQL database: {e}")
+                finally:
+                    # Close cursor and connection
+                    if 'cursor' in locals():
+                        cursor.close()
+                    if 'connection' in locals() and connection.open:
+                        connection.close()
+                valuesX = []
+                valuesY = []
+                x=""
+                y=""
+                flag_write = False
 
 class MyHandler(FileSystemEventHandler):
     def __init__(self, log_file):
